@@ -1,0 +1,639 @@
+<?xml version = "1.0" encoding="Windows-1252" standalone="yes"?>
+<VFPData>
+	<help>
+		<key>Gestion des stocks (K)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+des+stocks</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Voorraadbeheer</urln>
+		<urle/>
+	</help>
+	<help>
+		<key>Gestion des commandes (O)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+des+commandes</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Beheer+bestellingen</urln>
+		<urle/>
+	</help>
+	<help>
+		<key>Gestion des traites (A)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+des+traites</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Beheer+van+wissels</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des paiements (rappels) (Y)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327853</urlf>
+		<urln>http://help.winbooks.be/pages/viewpage.action?pageId=1146950</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Liaison à une comptabilité</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327825</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Boekhoudkoppeling</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion d'une seconde référence tiers</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327852</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Beheer+van+een+tweede+referentie+derden</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion de plusieurs références bancaires</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327822</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Beheer+van+meerdere+bankreferenties</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des frais de port</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+des+frais+de+port</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Beheer+van+verzendkosten</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des taxes (J)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+des+taxes</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Taksbeheer</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion de Point de vente</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+de+Point+de+vente</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Beheer+Verkooppunt</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des véhicules (G)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327844</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>EDI</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/EDI</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>E-Commerce</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Module+e-Commerce</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Module+e-Commerce</urln>
+		<urle/>
+  </help>
+   <help>
+		<key>Catalogue en ligne"</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327893</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Parameters+voor+Logistics</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Utiliser PrestaShop</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/E-Commerce+PrestaShop</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Synchronisation SQL Server (W1)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Module+Synchro+SQL</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Module+Synchronisatie+SQL</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Export UBL</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Export+UBL</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Export+UBL</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des véhicules de remplacement (G)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327866</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des déclarations intrastat (N)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327771</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion de catalogues articles (G)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+de+catalogues+articles</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des abonnements (D)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Module+Gestion+des+abonnements</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Réplication entre sites (X)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327787</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Utilisation du signalétique internet (@)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Autres+options</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Andere+opties</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Import/Export de données (U)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Module+Exchange</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Module+Exchange</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Import/Export PDA(B3)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Autres+options</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Andere+opties</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Affichage de la barre d'état en bas de l'écran</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327845#Préférences-Divers</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Voorkeurinstellingen#Voorkeurinstellingen-Diversen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Paramètres pour l'envoi des e-mail</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327845#Préférences-Envoidese-mail</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Voorkeurinstellingen#Voorkeurinstellingen-E-mailsverzenden</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Codes analytiques dans les articles</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+analytique#Gestionanalytique-Analytiquepararticle</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Analytisch+beheer#Analytischbeheer-_Toc146459159Analytischegegevensineenartikelfiche</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des tailles (Z)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Module+Gestion+des+tailles+et+couleurs</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Module+Beheer+van+maten+en+kleuren</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des couleurs (Z)</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Module+Gestion+des+tailles+et+couleurs</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Module+Beheer+van+maten+en+kleuren</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion de numéro de Lot/Série (S)</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des tarifs</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327906</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Tarieven%2C+specifieke+prijzen+en+kortingen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des codes à barres</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327907</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Werken+met+barcodes</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Champs facultatifs</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Avertissement en cas de dépassement de stock</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327768</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Instellingen+van+voorraadbeheer</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des articles composés (P)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327800</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion de la production (F)</key>
+		<urlf>http://help.winbooks.be/pages/viewpage.action?pageId=327716</urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des systèmes assemblés (PFS)</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Articles liés</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Articles</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Artikelen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des conditionnements</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Articles</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Artikelen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Gestion des quantités à l'achat et à la vente</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Articles</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Artikelen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Transformation du code article</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Réduction de la valeur comptable</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Articles</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Artikelen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Affichage de l'image à droite des pages (en hauteur)</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Affichage de la valeur stock</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Depuis l'écran des articles, mémoriser le dernier critère de recherche pour le fournisseur</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Afficher tous les prix dans un seul onglet de la fiche article</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Articles en sommeil et fiches modèles</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Paramètres pour l'impression des étiquettes</key>
+		<urlf>http://help.winbooks.be/display/HelpLogFr/Articles</urlf>
+		<urln>http://help.winbooks.be/display/HelpLogNL/Artikelen</urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Paramètres pour les recherches 'fulltext'</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+		<key>Toujours utiliser la recherche 'fulltext' pour les articles</key>
+		<urlf></urlf>
+		<urln></urln>
+		<urle/>
+  </help>
+  <help>
+    <key>Codes analytiques dans les clients</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des escomptes</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des adresses de livraisons</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des agents</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des contacts (C)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>CRM (M)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Module+CRM</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Module+CRM</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des domiciliations (Q)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Module+Gestion+des+domiciliations</urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Champs facultatifs</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des devises</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion du mode de regroupement des BL sur les factures par client</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Dossier d'assurance crédit</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Blocage des clients</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Afficher l'en-cours client dans la fiche</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Distinguer clients &amp; fournisseurs dans les recherches</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Encodage libre des codes postaux (Pas de contrôle)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Utiliser le nom plutôt que le code dans les listes</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Tiers en sommeil et fiches modèles</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Utiliser Skype</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Utilisation d'un lecteur de carte d'identité électronique</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Utiliser un numéro de rue séparé</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Spécifier un intitulé personnalisé pour les tiers de type 'autres'</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Utilisation du numéro d'entreprise</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Paramètres pour les recherches 'fulltext'</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Toujours utiliser la recherche 'fulltext' pour les tiers</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Accepter les doublons d'adresses email (Tiers/Contacts)</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Format d'édition du code client</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Clients+et+fournisseurs#Clientsetfournisseurs-Formatd%27%C3%A9ditionducodeclient</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Klanten+en+leveranciers#Klantenenleveranciers-Invoerformaatklantcode</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Codes analytiques dans les documents</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+analytique#Gestionanalytique-Analytiquepardocument</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Analytisch+beheer#Analytischbeheer-_Toc123449591_Toc146459156Analytischegegevensineendocument</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Codes analytiques dans les lignes des documents</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+analytique#Gestionanalytique-Analytiqueparlignededocument</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Analytisch+beheer#Analytischbeheer-_Toc123449592_Toc146459157Analytischegegevensineendocumentregel</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des envois (E)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des statuts</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Gestion+des+statuts+pour+les+documents</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Werken+met+statuten+in+de+documenten</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Afficher l'aide mémoire client</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Afficher l'aide mémoire du second tiers</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion de dossiers</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gérer une remise globale dans l'entête du document</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gérer les notes structurées dans les documents</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Modification/suppression des documents liés</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Pourcentage de commission par ligne de document</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Gestion des niveaux dans les lignes des documents (P)</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Documents importés (d'un autre logiciel)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Date de livraison par ligne de document</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Afficher la quantité livrée par ligne de document (dans les commandes)</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Afficher le total HTVA de chaque ligne du document</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Afficher le total TVAC de chaque ligne du document</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Voir le prix d'achat des articles durant l'encodage des documents des clients</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Avertissement si le prix est inférieur au prix de revient</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Mémoriser l'ordre des colonnes par utilisateur</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Ajouter une colonne qui marque le retour à la ligne</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Proposer d'importer les Back-Orders dans une nouvelle commande</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Vérifier la quantité livrée par rapport à la quantité commandée</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Depuis l'écran des documents, mémoriser le dernier critère de recherche pour les articles</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Recherche paramétrable des documents</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Calcul de la marge dans les documents de livraison client</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Sélection articles multiples par journal dans les documents</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Utiliser une note au format HTML</key>
+    <urlf>http://help.winbooks.be/display/HelpLogFr/Documents#Documents-right</urlf>
+    <urln>http://help.winbooks.be/display/HelpLogNL/Documenten#Documenten-right</urln>
+    <urle/>
+  </help>
+  <help>
+    <key>Ecran d'encodage des documents</key>
+    <urlf></urlf>
+    <urln></urln>
+    <urle/>
+  </help>
+</VFPData>

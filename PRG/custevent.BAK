@@ -1,0 +1,262 @@
+FUNCTION E_FieldDisplay		&& Can view the field
+     LPARAMETERS PcTable, pcField, pcScreen
+
+	&&STRTOFILE(CHR(13) + CHR(10) + "pcTable : '" + TRANSFORM(pcTable) + "'" + CHR(13) + CHR(10), "c:\temp\log.txt", 1 )
+	&&STRTOFILE("pcField : '" + TRANSFORM(pcField) + "'" + CHR(13) + CHR(10), "c:\temp\log.txt", 1 )
+	&&STRTOFILE("pcScreen: '" + TRANSFORM(pcScreen) + "'" + CHR(13) + CHR(10), "c:\temp\log.txt", 1 )
+
+	IF pcField = 'm.accountjnl' THEN
+		=SetScrObj( "C:GET", 		"", "m.pesage", "@*C "+l("Utiliser ce journal dans pesage"), 1, 1, 22, "VReplace('Pesage')", "W_Jnl1()" )
+	ENDIF
+
+	RETURN .T.
+	
+PROCEDURE E_Doc2MenuBuild 
+	LPARAMETERS pcJnl, pnNumber, pcContext, plCalledFromList, poForm, poMenu
+	
+	poMenu.DefineBar( PicPre("export",1), l("Exporter Csv"), "ExportCsv('OneDoc')" )
+
+ENDPROC
+
+PROCEDURE E_Doc2BuildControlsPage
+	LPARAMETERS pnPage, poDocNew, poForm 
+	IF pnPage==1 THEN
+		=ADDPROPERTY(poDocNew, "zoFormButtPrintDoc", poForm.zAddCommandGroup( "_2LYh", "", 0, "<E>="+l("Exporter en Csv la sélection "), ".T.", "ExportCsv('Select')" ))
+	ENDIF
+ENDPROC
+
+PROCEDURE ExportCsv
+	LPARAMETERS pcType
+	
+	LOCAL lcCmd,llOk
+		
+	llOk = .T.
+
+	DO CASE
+	CASE pcType = "OneDoc" && si on est sur le document on exporte que celui-ci
+		DIMENSION aForExport[1,1]
+		STORE c_dochead.jnl+STR(c_dochead.number,8) TO aForExport
+	OTHERWISE	&& sinon on reprend les documents sélectionné dans le i_view 
+		lccmd = "SELECT jnl+STR(number,8) FROM "+goActiveForms.aActiveForms[1].zolstDOCGRID.oviEW.cviewNAME+" WHERE ItemSelected = .T. INTO ARRAY aForExport"
+		&lccmd
+		IF _TALLY <= 0
+			llOk = .F.
+		ENDIF
+	ENDCASE		
+	IF llOk
+		DO ExportDocCsv WITH aForExport
+	ENDIF
+	
+	INFO(l("Fin de l'export CSV"))
+
+ENDPROC
+
+PROCEDURE ExportDocCsv
+	PARAMETERS paDoc
+
+	EXTERNAL ARRAY paDoc
+	
+	PRIVATE ARRAY DocheadArrayField,DocdetArrayField
+	PRIVATE scSelect,scWhere,slUseSql,scCSV,snDocheadFieldCount,snDocdetFieldCount,slNoQuestion
+	LOCAL lnErrorSql, lnDocheadFieldIterator,lnDocdetFieldIterator, llOk,lnOldSelect,lcCmd,lcFileName, lcPath,llLastReponse,lnMaxIn, llFirstIn, llError,lcError
+	LOCAL lcBarCode, lcLine,lnBalanceAmount, lnTotBalanceAmount  
+
+	lnOldSelect = SELECT()
+	slNoQuestion = .F.
+	lcPath = GetParam("EXPORT_CSV_PATH",gcrootdir+gccompid+"\"+"LOGISTICS_OUT\")
+	lcError = ""
+	llError = .F.
+	IF !DIRECTORY(lcPath)
+		lcCmd = "MKDIR '"+lcPath+"'"
+		&lcCmd
+	ENDIF
+	
+	scCSV = ""
+	slUseSql = UseSql()
+	scSelect = "SELECT * FROM DOCHEAD"
+	
+	llOk = .T.
+	WAIT WINDOW l("Reprise des documents à exporter")+CHR(13)+CHR(10)+l("Veuillez patienter") NOWAIT NOCLEAR
+	IF slUseSql 
+		scWhere = " WHERE jnl+STR(number,8) in ("
+		FOR lni = 1 TO ALEN(paDoc)
+			scWhere = scWhere + IIF(lni > 1,",'","'")+ paDoc[lni]+"'"
+		ENDFOR
+		scWhere = scWhere+")"
+	
+		IF !SelectInSql( scSelect + scWhere ,"DocHeadCSV",@lnErrorSql )
+			llOk = .F.
+		ENDIF
+		snDocheadFieldCount = AFIELDS(DocheadArrayField,"DocHeadCSV")
+	ELSE
+		IF !USED("dochead")
+			USE gcdatadir+"dochead" IN 0 SHARED AGAIN		 
+		ENDIF
+		
+		SELECT * FROM dochead WHERE .F. INTO CURSOR DocheadCSV READWRITE
+		snDocheadFieldCount = AFIELDS(DocheadArrayField,"DocHeadCSV")
+		lnMaxIn = 1
+		FOR lni = 1 TO ALEN(paDoc)
+			lnMaxIn = lnMaxIn + 15
+			scWhere = " WHERE jnl+STR(number,8) in ("
+			llFirstIn = .T.
+
+			DO WHILE lni <= lnMaxIn AND lni <= ALEN(paDoc)
+				scWhere = scWhere + IIF(llFirstIn ,"'",",'")+ paDoc[lni]+"'"
+				llFirstIn = .F.
+				lni = lni +1
+			ENDDO
+			scWhere = scWhere+")"
+				lcCmd = scSelect + scWhere +"INTO CURSOR DocHeadCSVTmp"
+				&lcCmd
+				DO WHILE !EOF("DocHeadCSVTmp")
+					APPEND BLANK IN DocHeadCSV
+					FOR lnDocHeadFieldIterator = 1 TO snDocheadFieldCount
+						lcCmd = "REPLACE DocHeadCSV."+DocheadArrayField(lnDocHeadFieldIterator ,1)+" WITH DocHeadCSVTmp."+DocheadArrayField(lnDocHeadFieldIterator ,1)+" IN DocHeadCSV"
+						&lcCmd
+					ENDFOR
+					SKIP 1 IN DocHeadCSVTmp
+				ENDDO
+		ENDFOR
+	ENDIF
+	
+	WAIT CLEAR
+	
+	*Generation du CSV && Créer au préalable le champ DATETIME CSVEXPORT et COMFIN N(5)
+	lni = 1
+	SELECT DocHeadCsv
+	GO TOP
+	lnBalanceAmount = 0
+	lnTotBalanceAmount  = 0
+	lcFileName_Facturation = DTOC(DATE(),1) + '_facturation.csv'
+	lcFileName_Debiteur = DTOC(DATE(),1) + '_debiteur.csv'
+	lcLineDebiteur = ""
+	
+	Wprocess("INIT",snDocheadFieldCount , l("Génération CSV"))
+	DO WHILE !EOF("DocHeadCsv") AND llError = .F.
+		TRY 
+			Wprocess("UPD",lni)
+			llOk = .T.
+			
+			lcLine = "10" + ";" && A - Identification de la ligne 10 = nouvelle facturation (fichier full factoring) 20 = factures et paiements ouverts ( fichier Intercredit ) 30 = Totaux
+			lcLine = lcLine  + "3" + ";" && B - Administration = 3 = Belgique
+			lcLine = lcLine  + ALLTRIM(TRANSFORM(gocache.CustGetFieldValue(DocHeadCsv.THIRDID,"COMFIN",""))) + ";" && C - N° client chez comfin   
+			lcLine = lcLine  + ALLTRIM(DocHeadCsv.THIRDGROUP) + ";" && D - Référence client = 3 ( votre client)
+			lcLine = lcLine  + "2" + ";" && E - 2 - Toujours 2
+			lcLine = lcLine  + DocHeadCsv.JNL + TRANSFORM(DocHeadCsv.NUMBER) + ";" && F - N° facture
+			lcLine = lcLine  + PADL(TRANSFORM(DAY(DocHeadCsv.DATE)),2,"0") + PADL(TRANSFORM(MONTH(DocHeadCsv.DATE)),2,"0") + PADL(TRANSFORM(YEAR(DocHeadCsv.DATE)),4,"0")  + ";" && G - Date facture - format JJMMAAAA,sans signe de séparation
+			lcLine = lcLine  + "" + ";" && H - vide
+			lnBalanceAmount = gocache.CustBalance(DocHeadCsv.THIRDID)
+			lnTotBalanceAmount  = lnTotBalanceAmount + lnBalanceAmount 
+			lcLine = lcLine  + TRANSFORM(lnBalanceAmount ) + ";" && I - Montant ouvert facture en compta - virgule pour les décimales, pas de signe/espace pour les milliers. Debit (+) of Credit (-), à placer devant le montant     (exemple: 5254,20  ou -5254,20)
+			lcLine = lcLine  + "" + ";" && J - vide
+			lcLine = lcLine  + TRANSFORM(gocache.DocheadGetSumVatAmt(DocHeadCsv.JNL , DocHeadCsv.NUMBER)) + ";" && K - Montant de TVA - virgule pour les décimales, pas de signe/espace pour les milliers. Debit (+) of Credit (-), à placer devant le montant     (exemple: 5254,20  ou -5254,20)
+			lcLine = lcLine  + IIF(EMPTY(DocHeadCsv.CURRID),"EUR","") + ";" && L - Devise (ISO 4217)
+			lcLine = lcLine  + "" + ";" && M - vide
+			lcLine = lcLine  + "" + ";" && N - Nombre de jours d'échéance : entre date facture et échéance, si  cette colonne est utilisée alors ne pas utiliser la colonne O
+			lcLine = lcLine  + PADL(TRANSFORM(DAY(DocHeadCsv.DATEPAY)),2,"0") + PADL(TRANSFORM(MONTH(DocHeadCsv.DATEPAY)),2,"0") + PADL(TRANSFORM(YEAR(DocHeadCsv.DATEPAY)),4,"0")  + ";" && O - Date déchéance - format JJMMAAAA,sans signe de séparation si colonne N remplie alors pas utiliser
+			lcLine = lcLine  + "" + ";" && P - vide
+			lcLine = lcLine  + "" + ";" && Q - vide
+			lcLine = lcLine  + "" + ";" && R - vide
+			lcLine = lcLine  + "" + ";" && S - vide
+			lcLine = lcLine  + "" + ";" && T - vide
+			lcLine = lcLine  + "" + ";" && U - vide
+			lcLine = lcLine  + "" + ";" && V - vide
+			lcLine = lcLine  + "" + ";" && W - vide
+			lcLine = lcLine  + "" + ";" && X - vide
+			lcLine = lcLine  + "" + ";" && Y - vide
+			lcLine = lcLine  + "" + ";" && Z - vide
+			lcLine = lcLine  + "" + ";" && AA - vide
+			lcLine = lcLine  + "" + ";" && AB - vide
+			lcLine = lcLine  + ""  && AC - vide
+
+			scCsv = scCsv + lcLine + CHR(13) + CHR(10)
+
+			gocache.DocHeadPutFieldValue(ALLTRIM(DocHeadcsv.jnl),DocHeadcsv.number,"CSVEXPORT",DATETIME())
+			
+			&&Création du fichier Débiteur
+			lcLineDebiteur = lcLineDebiteur + "90" + ";" && A - Identification de la ligne  toujours = 90
+			lcLineDebiteur = lcLineDebiteur + "3" + ";" && B - Administration, Ingcomfin BE = 3
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(TRANSFORM(gocache.CustGetFieldValue(DocHeadCsv.THIRDID,"COMFIN",""))) + ";" && C - N° client chez comfin (prévoir 5 caractères en N)
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDTEL) + ";" && D - N° du débiteur  (prévoir 10 caractères en A)
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && E - vide
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDNAME) + ";" && F - Nom debiteur 1
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && G - vide
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDADDR) + ";" && H - Adresse 
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDCITY) + ";" && I - Ville 
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDZIP) + ";" && J - Code postal 
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDCOUNT) + ";" && K - Code pays (ISO 3166-1 alpha-2)
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && L - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && M - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && N - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && O - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && P - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && Q - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && R - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && S - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && T - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && U - vide
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && V - vide
+			lcLineDebiteur = lcLineDebiteur + ALLTRIM(DocHeadCsv.THIRDVAT) + ";" && W - N° de TVA
+			lcLineDebiteur = lcLineDebiteur + "" + ";" && X - vide
+			lcLineDebiteur = lcLineDebiteur + ""  && Y - vide
+			lcLineDebiteur = lcLineDebiteur + CHR(13) + CHR(10)
+			
+		CATCH TO loError
+			llError = .T.
+			lcError = lcError + ALLTRIM(DocHeadcsv.jnl) + TRANSFORM(DocHeadcsv.number) +" : "+loError.message + "-" + TRANSFORM(loError.LINENO) +CHR(13)+CHR(10)
+		ENDTRY		
+		SELECT DocHeadCsv
+		SKIP 1 IN DocHeadCsv	
+	ENDDO
+
+	IF RECCOUNT() > 0 THEN
+		&& Totaux
+		lcLine = "30" + ";" && A - 30 = Totaux 
+		lcLine = lcLine  + "3" + ";" && B - Administration = 3 = Belgique
+		lcLine = lcLine  + ALLTRIM(TRANSFORM(gocache.CustGetFieldValue(DocHeadCsv.THIRDID,"COMFIN",""))) + ";" && C - N° client chez comfin   
+		lcLine = lcLine  + "" + ";" && D 
+		lcLine = lcLine  + "" + ";" && E 
+		lcLine = lcLine  + TRANSFORM(RECCOUNT()) + ";" && F - nombre de factures
+		lcLine = lcLine  + "" + ";" && G - vide
+		lcLine = lcLine  + "" + ";" && H - vide
+		lcLine = lcLine  + TRANSFORM(lnTotBalanceAmount ) + ";" && I - Montant total de documents
+		lcLine = lcLine  + "" + ";" && J - vide
+		lcLine = lcLine  + "" + ";" && K - vide
+		lcLine = lcLine  + "" + ";" && L - vide
+		lcLine = lcLine  + "" + ";" && M - vide
+		lcLine = lcLine  + "" + ";" && N - vide
+		lcLine = lcLine  + "" + ";" && O - vide
+		lcLine = lcLine  + "" + ";" && P - vide
+		lcLine = lcLine  + "" + ";" && Q - vide
+		lcLine = lcLine  + "" + ";" && R - vide
+		lcLine = lcLine  + "" + ";" && S - vide
+		lcLine = lcLine  + "" + ";" && T - vide
+		lcLine = lcLine  + "" + ";" && U - vide
+		lcLine = lcLine  + "" + ";" && V - vide
+		lcLine = lcLine  + "" + ";" && W - vide
+		lcLine = lcLine  + "" + ";" && X - vide
+		lcLine = lcLine  + "" + ";" && Y - vide
+		lcLine = lcLine  + "" + ";" && Z - vide
+		lcLine = lcLine  + "" + ";" && AA - vide
+		lcLine = lcLine  + "" + ";" && AB - vide
+		lcLine = lcLine  + ""  && AC - vide
+		
+		scCsv = scCsv + lcLine 
+		
+		STRTOFILE(scCsv,lcPath + lcFileName_Facturation ,0)
+		
+		STRTOFILE(lcLineDebiteur ,lcPath + lcFileName_Debiteur ,0)
+	ENDIF
+	
+	wProcess("END")
+	
+	IF llError
+		Stop(lcError)
+	ENDIF
+	
+	SELECT(lnOldSelect)
+	
+	RETURN .T.
+			
+ENDPROC 

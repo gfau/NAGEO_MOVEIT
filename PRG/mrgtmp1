@@ -1,0 +1,110 @@
+&&vContratNouveau("", "WB00000001")
+
+&&vContratNouveau("9782857072805","")
+&&Prévoir un clic droit sur le poids qui bouge qui renvoie la trame
+&&Avertissement sonore quand on dépasse un certain nombre de kg
+&&Utilisateur est celui de logistcs GCUserId
+
+&&Entreprise c'est le dossier
+&&un transporteur -> plusieurs camions
+&&La plaque sera dans le dochead. PLAQUE DEF250 , libellé (Camion de josé), Transporteur (Code et libellé) (créer la table)
+&&une plaque a une TARE
+
+*** Table plaque ***
+&& PLAQUE | LIBELLE | TARE | TRANSPORTEUR 
+********************
+
+*** Table contrat ***
+&& CODE C(20) | Libellé c(50) | Tonnage N(12.3) | Produit (ARTID)  | Client GROUPID | Prix U N(12.2)| Remise N(5.2) | INSLEEP
+*********************
+
+&&Bordereau Ext  = YOURREF
+&&Prévoir un bouton effacer pour supprimer un document
+&&Entrepot = STKID par défaut celui du journal
+&&N° de lot, si on a la gestion des lots séries (comme dans un journal d'achat)
+&&Remarque interne 		DOCHEAD.NOTE
+&&Remarque borderau		DOCDET.ARTDESC
+
+&&Brut - tare -> qty
+
+&&Saisie Ordre
+&&Plaque / Tiers / Contrat(du tiers) alors le produit est lié (produit pas modifiable), si pas de contrat alors choisir produit.
+
+
+
+PRIVATE lcThirdid, lcThirdName, lcThirdGroup, scUtilisateur, scFilter, snWeight
+STORE "" TO lcThirdid, lcThirdName, lcThirdGroup, scFilter, snWeight
+scUtilisateur = PADR("",50)
+snWeight = 0
+
+TRY
+
+	IF !USED("__DOCHEAD") THEN
+		OPENTABLE("DOCHEAD", "JNL_NUM", "__DOCHEAD")
+	ENDIF
+
+	SetScrObj(":INIT","Move-It","","","","", "PesageKeyPress", "",170)
+
+	=SetScrObj(":BEGINGROUP")
+	=SetScrObj( "C:SAY", "")
+	=SetScrObj( ":ENDGROUP" )
+	=SetScrObj("F_:BEGINGROUP")
+	=GetField( "_C:GET:O=loWeight", "", "snWeight",	"99999999.99", ".T.", ".F." )
+	=SetScrObj("LASTOBJECT", "FORECOLOR", RGB(0,255,100))
+	=SetScrObj("LASTOBJECT", "BACKCOLOR", RGB(0,0,0))
+	=SetScrObj("LASTOBJECT", "WIDTH", 70)
+	=SetScrObj("LASTOBJECT", "HEIGHT", 8)
+	=SetScrObj("LASTOBJECT", "LEFT", 338)
+	=SetScrObj("LASTOBJECT", "ALIGNMENT", 2)
+	=SetScrObj("LASTOBJECT", "SELECTEDBACKCOLOR", RGB(0,0,0))
+	=SetScrObj("LASTOBJECT", "SELECTEDFORECOLOR", RGB(0,0,0))
+	=SetScrObj("LASTOBJECT", "DISABLEDBACKCOLOR", RGB(0,0,0))
+	=SetScrObj("LASTOBJECT", "DISABLEDFORECOLOR", RGB(87,113,92))
+	=SetScrObj("LASTOBJECT", "BORDERCOLOR", RGB(0,0,0))
+	=SetScrObj("LASTOBJECT", "FONTSIZE", 48)
+	=SetScrObj("LASTOBJECT", "FONTSHADOW", .T.)
+	=SetScrObj("LASTOBJECT", "TABSTOP", .F.)
+	=SetScrObj( ":ENDGROUP" )
+	=SetScrObj("_:BEGINGROUP")
+	=SetScrObj( "_C:SAY", "")
+	=SetScrObj( ":ENDGROUP" )
+
+	=SetScrObj( ":BEGINGROUP" )
+	=SetScrObj("_:GET:", "", "", "@*HN Nouveau (F9)"	, 1, 60, 60, "vNouveau()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Dupliquer"		, "", 1, 60, "vDupliquer()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Rechercher"		, "", 1, 60, "vRechercher()"		, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Peser"			, "", 1, 60, "vPeser()"				, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Contrats"		, "", 1, 60, "vContrats()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Immatriculation"	, "", 1, 60, "vImmatriculation()"	, ".T."  )
+	=SetScrObj(":GET:", "", "", "@*HN Imprimer (F4)"	, "", 1, 60, "vImprimer()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Effacer (F12)"	, "", 1, 60, "vEffacer()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Modifier (F5)"	, "", 1, 60, "vModifier()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Repesage"		, "", 1, 60, "vRepesage()"			, ".T."  )
+	=SetScrObj("_:GET:", "", "", "@*HN Sauver (END)"	, "", 1, 60, "vSauver()"			, ".T."  )
+	=SetScrObj( ":ENDGROUP" )
+
+	=SetScrObj( "C0:BEGINGROUP" )
+	=SetScrObj( ":WINLIST:O=zoDocuments", "", "" , "UPPER($)", "", 35, 140, ".T." , ".T.", "__DOCHEAD" )
+	=SetScrObj( "WINCOL" , l("JNL")			, 	"__DOCHEAD.JNL"				, 	8 )
+	=SetScrObj( "WINCOL" , l("NUMBER")		, 	"__DOCHEAD.NUMBER"			, 	8 )
+	=SetScrObj( "WINCOL" , l("ThirdId")		, 	"__DOCHEAD.THIRDID"			, 	25 )
+	=SetScrObj( ":ENDGROUP" )
+
+	=SetScrObj( "C0:BEGINGROUP" )
+		=SetScrObj( ":BEGINGROUP" )
+		=GetField( "GET" , "Bordereau", "__DOCHEAD.JNL" , "*!", ".T.", ".F." )
+		=SetScrObj( ":ENDGROUP" )
+
+		=SetScrObj( "_:BEGINGROUP" )
+		=GetField( "GET" , "Plaque du véhicule", "__DOCHEAD.NUMBER" , "", ".T.", ".T." )
+		=SetScrObj( ":ENDGROUP" )
+	=SetScrObj( ":ENDGROUP" )
+
+	InitFilter()
+
+	&&Ajout du timer dans la page
+	ADDPROPERTY(goScrObj[gnScrObj], "zoRefreshTimer", CREATEOBJECT("RefreshTimer", goScrObj[gnScrObj]))
+	ADDPROPERTY(goScrObj[gnScrObj], "zoTimer", NULL)
+	goScrObj[gnScrObj].zoTimer = CREATEOBJECT("WinTimer", goScrObj[gnScrObj].hWnd,1, goScrObj[gnScrObj].zoRefreshTimer)
+
+	SetScrObj("READ:O")

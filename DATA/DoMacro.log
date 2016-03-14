@@ -1,0 +1,165 @@
+browse
+:u docdet
+modi stru
+:u dochead
+browse
+:u field
+browse
+:u field
+browse
+:u field
+browse
+:u plaque
+browse
+:u table
+browse
+:u dochead
+DO DocFormSession WITH "4-FAC" IN FlexWindows
+browse
+browse
+:u index
+browse
+:u index
+browse
+:u field
+browse
+:u table
+browse
+:u index
+modi stru
+browse
+:u plaque
+browse
+:s cust
+:u art
+browse
+:u index
+browse
+:u index
+browse
+:u index
+browse
+:u dictable
+browse
+:s table
+browse
+:u field
+browse
+:u table
+browse
+:u field
+browse
+:u jnl
+browse
+:u field
+browse
+:u cscreen
+browse
+:u winlist
+browse
+:u price
+replace all CSVEXport WITH CTOT("")
+browse 
+:u dochead
+browse
+:u field
+browse
+:u field
+browse
+:u docdet
+browse
+:u dochead
+browse for field_name = "TRANSA"
+browse for field_name = "TRANSACT"
+:u dicfield
+browse
+:u dicfield
+windowsexec("regsvr32 VFPOLDDB.dll")
+windowsexec("regsvr32 c:\temp\VFPOLDDB.dll2")
+windowsexec("regsvr32 VFPOLDDB.dll2")
+windowsexec("regsvr32 VFPOLDDB.dll")
+browse
+:u pref
+browse
+:u cscreen 
+wait window GetTableId("INTRASTAT")
+browse
+:u art
+wait windo gocache.incodesGetFieldValue( "LANGUAGE", 1, "VALA5", "-" )
+wait windo gocache.incodesGetFieldValue( "LANGUAGE", 1, "VALA5", "" )
+wait windo gocache.incodesGetFieldValue( "LANGUAGE", 1, "VALA5", "" )
+debug
+browse
+:s cust
+debug 
+delete all
+:u artana
+delete all
+:u anacode
+delete all
+:u art
+delete all
+:u artana
+delete all
+:u anacode
+delete all
+:u art
+delete all
+:u artana
+delete all
+:u anacode
+delete all
+:u art
+browse
+:u docdet
+reindex
+use ? exclusive
+browse
+:u anacode
+replace all web with .T.
+:u art
+wait window gcRootDir
+browse
+:u field
+browse
+:u field
+brows for field_name = "EMAIL"
+browse for tableid = "cust"
+:u dicfield
+wait window gcrootdir
+browse
+:u attach
+browse
+:u dochead
+browse
+:u dochead
+browse
+:u dochead
+browse
+browse
+:u dochead
+browse
+:u jnl
+info(transform(gnPriceLen))
+do settheme6
+do SetTheme6
+info(gcRootDir)
+browse
+:u winlist
+info(gcRootDir)
+:b
+:u dicfield
+modi struct
+:b
+:u art
+:b
+:u pers
+:b
+:u pers
+:b
+:b
+:u pers
+:b
+:u pers
+:b
+:s codes

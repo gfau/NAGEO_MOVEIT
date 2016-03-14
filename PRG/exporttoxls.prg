@@ -1,0 +1,239 @@
+*** EXEMPLE ****
+CloseUsed("ART")
+OPENTABLE("ART")
+
+loExcel = CreateObject("ExcelClass")
+loExcel.lVisible 			= .T.
+loExcel.lExportWithTitle 	= .T.
+loExcel.lAutoFit 			= .T.
+loExcel.SetSaveFormat("XLOPENXMLWORKBOOK")
+IF !loExcel.DbfToXls("ART", "c:\temp\test.xls",.T.) THEN
+	STOP(loExcel.cLastError)
+ENDIF
+
+*** FIN DE l'EXEMPLE ****
+
+&&FORMAT
+#DEFINE EXCEL_FORMAT_GENERAL					"General"
+#DEFINE EXCEL_FORMAT_NUMBER 					"0.00"
+#DEFINE EXCEL_FORMAT_CURRENCY 					"$ #,##0.00"
+#DEFINE EXCEL_FORMAT_ACCOUNTING					"_($* #,##0.00_);_($* (#,##0.00);_($* "-"??_);_(@_)"
+#DEFINE EXCEL_FORMAT_DATE						"m/d/yyyy"
+#DEFINE EXCEL_FORMAT_TIME 						"[$-F400]h:mm:ss AM/PM"
+#DEFINE EXCEL_FORMAT_DATETIME 					"dd/mm/yyyy hh:mm:ss"
+#DEFINE EXCEL_FORMAT_PERCENTAGE 				"0.00%"
+#DEFINE EXCEL_FORMAT_FRACTION 					"# ?/?"
+#DEFINE EXCEL_FORMAT_SCIENTIFIC 				"0.00E+00"
+#DEFINE EXCEL_FORMAT_TEXT 						"@"
+
+&&SAVE
+#DEFINE EXCEL_SAVE_FORMAT_EXCEL8				56 	&&xlExcel8
+#DEFINE EXCEL_SAVE_FORMAT_EXCEL9795				43 	&&xlExcel9795
+#DEFINE EXCEL_SAVE_FORMAT_XLCSV					6 	&&xlCSV
+#DEFINE EXCEL_SAVE_FORMAT_XLHTML				44 	&&xlHtml
+#DEFINE EXCEL_SAVE_FORMAT_XLOPENXMLWORKBOOK		51  &&xlOpenXMLWorkbook (Xlsx)
+
+DEFINE CLASS ExcelClass AS Custom
+	
+	aFields 			= ""
+	cLastError 			= ""
+	lExportWithTitle 	= .F.
+	lVisible			= .F. 		&&Mode débugage, affiche Excel
+	lAutoFit 			= .F.		&&Ajustement des colonnes
+	cSaveFormat			= 56		&&xlExcel8 par défaut
+	cExtension			= ""
+	
+	PROCEDURE SetSaveFormat
+		LPARAMETERS pcFormat
+			
+		DO CASE 
+			CASE UPPER(pcFormat) = "EXCEL8"
+				This.cSaveFormat = EXCEL_SAVE_FORMAT_EXCEL8
+				This.cExtension	 = "Xls"
+			CASE UPPER(pcFormat) = "XLEXCEL9795"
+				This.cSaveFormat = EXCEL_SAVE_FORMAT_EXCEL9795
+				This.cExtension	 = "Xls"
+			CASE UPPER(pcFormat) = "XLCSV"
+				This.cSaveFormat = EXCEL_SAVE_FORMAT_XLCSV
+				This.cExtension	 = "Csv"
+			CASE UPPER(pcFormat) = "XLHTML"
+				This.cSaveFormat = EXCEL_SAVE_FORMAT_XLHTML
+				This.cExtension	 = "Html"
+			CASE UPPER(pcFormat) = "XLOPENXMLWORKBOOK"
+				This.cSaveFormat = EXCEL_SAVE_FORMAT_XLOPENXMLWORKBOOK
+				This.cExtension	 = "Xlsx"
+			OTHERWISE 
+				This.cSaveFormat = EXCEL_SAVE_FORMAT_EXCEL8
+				This.cExtension	 = "Xls"
+
+		ENDCASE
+		
+	ENDPROC
+	
+	FUNCTION DbfToXls
+		LPARAMETERS pcCursor, pcXlsFile, plAskOpen
+		
+		LOCAL lnOldAlias, lnColumnTot, loExcel, llOk, lnRow, lnColumn, laFields, loWorkbook 
+		LOCAL lnMemoLines, lnLine
+		lnOldAlias = SELECT()
+		
+		&&Création de l'objet Excel
+		loExcel = CREATEOBJECT("Excel.Application")
+		IF TYPE("loExcel") != "O" THEN
+			This.cLastError = l("L'application Excel n'a pas pu être initialisée")
+			RETURN .F.
+		ENDIF
+		
+		&&Si on est en mode débuggage, on affiche le fichier Excel
+		IF This.lVisible THEN
+			loExcel.visible = .T.
+		ENDIF
+		
+		&&Si le fichier existe déjà, on le supprime
+		IF FILE(pcXlsFile) THEN
+			llOk = .T.
+			TRY 
+				DELETE FILE (pcXlsFile)
+			CATCH TO loError
+				This.cLastError = loError.MESSAGE
+				STOP(loError.MESSAGE)
+				llOk = .F.
+			ENDTRY 
+			IF !llOk THEN
+				RETURN .F.
+			ENDIF
+		ENDIF
+		
+		&&Création de l'onglet dans Excel
+		loWorkbook = loExcel.Application.Workbooks.Add()
+		
+		&&On se place sur un curseur
+		SELECT(pcCursor)
+		
+		IF RECCOUNT() = 0 THEN
+			SELECT(lnOldAlias)
+			RETURN .F.
+		ENDIF
+		
+		SELECT(pcCursor)
+	
+		&&Parcourt de ce curseur
+		GO TOP
+		DIMENSION laFields[1]
+		lnColumnTot = AFIELDS(laFields, pcCursor)
+		lnRowTot = RECCOUNT()
+		lnRow = IIF(This.lExportWithTitle,2,1)
+		WProcess( "INIT", lnRowTot , l("Progression en cours"))
+		DO WHILE !EOF()
+			IF This.lExportWithTitle THEN
+				FOR lnColumn = 1 TO lnColumnTot 
+					loExcel.Cells(1, lnColumn).Value = laFields[lnColumn,1]
+				ENDFOR
+			ENDIF
+		
+			FOR lnColumn = 1 TO lnColumnTot 
+				lcField = pcCursor + "." + laFields[lnColumn,1]
+				lxFieldVal 	= EVALUATE(lcField)
+				DO CASE
+					CASE TYPE(lcField) = "C" 
+						lxVal = lxFieldVal 
+						
+					CASE TYPE(lcField) = "N" 
+						lxVal = lxFieldVal 
+					
+					CASE TYPE(lcField) = "L" 
+						lxVal = IIF(lxFieldVal,"true","false")
+					
+					CASE TYPE(lcField) = 'M'
+						lnMemoLines = MEMLINES(lxFieldVal )
+						lcMemo = ""
+			            FOR lnLine = 1 TO lnMemoLines
+			               IF lnLine < lnMemoLines
+			                  lcMemo = lcMemo + ALLTRIM(MLINE(lxFieldVal,lnLine)) + ' '
+			               ELSE
+			                  lcMemo = lcMemo + ALLTRIM(MLINE(lxFieldVal,lnLine))
+			               ENDif
+			            ENDfor
+			            lxVal = lcMemo
+			            
+					CASE TYPE(lcField) = 'D'
+						IF EMPTY(lxFieldVal) THEN
+							lxVal = ""
+						ELSE
+							lxVal = DTOC(lxFieldVal)
+						ENDIF
+						
+					CASE TYPE(lcField) = 'T'
+						IF EMPTY(lxFieldVal) THEN
+							lxVal = ""
+						ELSE
+							lxVal = TTOC(lxFieldVal)
+						ENDIF
+					
+					OTHERWISE
+						lxVal = TRANSFORM(lxFieldVal)
+						
+				ENDCASE
+				loExcel.Cells(lnRow, lnColumn).Value = lxVal
+			ENDFOR
+			
+			WProcess( "UPDREC", lnRow , l("Progression en cours"))
+			
+			lnRow = lnRow + 1
+			SKIP
+		ENDDO
+		
+		WProcess( "END" )
+	
+		&&On initialise le fomrat des colonnes
+		GO TOP
+		WProcess( "INIT", lnColumnTot, l("Progression en cours"))
+		FOR lnColumn = 1 TO lnColumnTot 
+			
+			lcField = pcCursor + "." + laFields[lnColumn,1]
+			DO CASE
+				CASE TYPE(lcField) = "C"  
+					loExcel.Columns(lnColumn).NumberFormat = EXCEL_FORMAT_TEXT
+				CASE TYPE(lcField) = "N"  
+					loExcel.Columns(lnColumn).NumberFormat = EXCEL_FORMAT_NUMBER
+				CASE TYPE(lcField) = "D"  
+					loExcel.Columns(lnColumn).NumberFormat = EXCEL_FORMAT_DATE
+				CASE TYPE(lcField) = "T"  
+					loExcel.Columns(lnColumn).NumberFormat = EXCEL_FORMAT_DATETIME
+				CASE TYPE(lcField) = "M"  
+					loExcel.Columns(lnColumn).NumberFormat = EXCEL_FORMAT_TEXT
+				CASE TYPE(lcField) = "Y"  
+					loExcel.Columns(lnColumn).NumberFormat = EXCEL_FORMAT_CURRENCY 
+			ENDCASE
+			IF This.lAutoFit THEN
+				loExcel.Columns(lnColumn).AutoFit()
+			ENDIF
+			
+			WProcess( "UPDREC", lnRow , l("Progression en cours"))
+		ENDFOR
+		WProcess( "END" )
+		
+		&&Sauvegarde du fichier Excel
+		IF VAL(loExcel.Version) > 11 THEN
+			pcXlsFile = STRTRAN(pcXlsFile,JUSTEXT(pcXlsFile),This.cExtension)
+		    loWorkbook.SAVEAS(pcXlsFile, This.cSaveFormat) 
+		ELSE
+    		loWorkbook.SAVEAS(pcXlsFile)
+		ENDIF
+	
+		loWorkbook.Close()
+		loExcel.quit()
+		RELEASE("loExcel")
+		
+		IF plAskOpen THEN
+			IF YesNo(l("Voulez-vous ouvrir le fichier généré ?")) THEN
+				WINDOWSEXEC(pcXlsFile, "open")
+			ENDIF
+		ENDIF
+		
+		SELECT(lnOldAlias)
+		RETURN .T.
+	
+	ENDFUNC
+	
+ENDDEFINE

@@ -1,0 +1,13 @@
+{
+"source": "Logistics",
+"owner": "BE 000.000.097",
+"owner_id_type": "VAT",
+"cb_success": "",
+"cb_failure": "",
+"destination": "",
+"dest_id_type": "VAT",
+"format": "efff 1.0",
+"docid": "4-FAC   _200404459071",
+"immediate": "Y",
+"channel": "email"
+}

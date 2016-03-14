@@ -1,0 +1,2 @@
+Dans ce répertoire, vous trouverez le dossier comptabilité Winbooks 'DEMO' (Au format backup Winbooks) correspondant au dossier 'DEMOLOGISTICS'.
+Vous pouvez restaurer ce dossier via votre programme 'Winbooks comptabilité'

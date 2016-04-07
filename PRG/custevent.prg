@@ -11,6 +11,78 @@ FUNCTION E_FieldDisplay		&& Can view the field
 
 	RETURN .T.
 	
+PROCEDURE E_ArtAfterAddLastPage
+	IF !USED("CARAART")
+		USE gcdatadir+"CARAART" SHARED AGAIN IN 0
+	ENDIF
+	
+	SetScrObj("PAGE","Caractéristiques")
+	SetScrObj("GROUP")
+	SetScrObj( "VIEW:o=zoC_Cara", "CARAART", "CARAARTVIEW", "TRIM(CARAART.artid) = TRIM(m.artid)", "CARAARTID" )
+
+	SetScrObj("_:GROUP")
+		=SetScrObj(":GET", "", "", "@* Nouveau", "", 1, 20,".T.", "V_CARA(.T.)")
+		=SetScrObj(":GET", "", "", "@* Modifier", "", 1, 20,".T.", "V_CARA(.F.)")
+	RETURN	
+
+PROCEDURE V_CARA
+	PARAMETERS plNew
+	
+
+	
+	LOCAL lnSelectOld, lcID
+	PRIVATE snMinVal,SnMaxVal,ScLib,ScUnit
+	
+	lnSelectOld = SELECT()
+	IF plNew
+		ScLib = ""
+		snMinVal = 0
+		SnMaxVal = 0
+		ScUnit = ""
+	ELSE
+		lcID = goscrobj[gnscrobj].zoC_Cara.RecordKey("")
+		ScLib = CARAARTVIEW.Lib
+		snMinVal = CARAARTVIEW.Valmin 
+		SnMaxVal = CARAARTVIEW.Valmax 
+		ScUnit = CARAARTVIEW.UNITE 
+	ENDIF
+
+	SetScrObj( "INIT", "Caractéristique" )
+		=SetScrObj( ":GET", "Libellée", "ScLib", "", ScLib, 1, 20, ".T.", ".T." )
+		=SetScrObj( ":GET", "Unité", "ScUnit", "", ScUnit , 1, 10, ".T.", ".T." )
+		=SetScrObj( ":GET", "Valeur min", "snMinVal", "", snMinVal , 1, 14, ".T.", ".T." )
+		=SetScrObj( ":GET", "Valeur max", "snMaxVal", "", snMaxVal , 1, 14, ".T.", ".T." )
+	IF SetScrObj("READ" )
+		SELECT CARAART
+		IF plNew
+			APPEND BLANK IN CARAART		
+			REPLACE CARAARTID WITH GETNEWID(),;
+					ARTID WITH m.ARTID IN CARAART
+			lcID = CARAART.caraartid
+		ENDIF
+
+			REPLACE LIB WITH ScLib,;
+					UNITE WITH ScUnit,;
+					Valmax WITH snMaxVal,;
+					Valmin WITH snminVal ;
+					FOR CARAARTID = lcID IN CARAART
+		
+			goscrobj[gnscrobj].zoC_Cara.RefreshView()
+	ENDIF
+	
+	SELECT(lnSelectOld)
+	
+PROCEDURE E_ArtAfterRead
+
+	IF USED("CARAART")
+		SELECT CARAART
+		SET FILTER TO TRIM(artid) = TRIM(m.artid)
+		goscrobj[gnscrobj].zoC_Cara.RefreshView()				
+	ENDIF
+
+
+	
+	
 PROCEDURE E_Doc2MenuBuild 
 	LPARAMETERS pcJnl, pnNumber, pcContext, plCalledFromList, poForm, poMenu
 	
